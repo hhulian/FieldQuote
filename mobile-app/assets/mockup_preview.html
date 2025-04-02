@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FieldQuote App Mockup</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        .phone-container {
+            width: 375px;
+            height: 812px;
+            margin: 20px auto;
+            background-color: white;
+            border-radius: 40px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border: 10px solid #333;
+        }
+        .status-bar {
+            height: 44px;
+            background-color: #2c3e50;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            color: white;
+            font-size: 14px;
+        }
+        .header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 600;
+        }
+        .header p {
+            margin: 5px 0 0;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+        .quote-preview {
+            background-color: white;
+            margin: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            padding: 15px;
+        }
+        .company-info {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #ecf0f1;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+        }
+        .company-name {
+            font-weight: bold;
+            font-size: 18px;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        .company-details {
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+        .quote-id {
+            font-weight: bold;
+            text-align: right;
+        }
+        .quote-date {
+            font-size: 14px;
+            color: #7f8c8d;
+            text-align: right;
+        }
+        .client-info {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        .section-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        .client-name {
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        .client-details {
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-bottom: 3px;
+        }
+        .line-items {
+            margin-bottom: 15px;
+        }
+        .line-item-header {
+            display: flex;
+            background-color: #ecf0f1;
+            padding: 10px 5px;
+            border-radius: 5px 5px 0 0;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        .line-item-row {
+            display: flex;
+            padding: 10px 5px;
+            border-bottom: 1px solid #ecf0f1;
+            font-size: 14px;
+        }
+        .description-cell {
+            flex: 3;
+        }
+        .qty-cell {
+            flex: 1;
+            text-align: center;
+        }
+        .price-cell {
+            flex: 1;
+            text-align: right;
+        }
+        .total-cell {
+            flex: 1;
+            text-align: right;
+            font-weight: 500;
+        }
+        .totals-container {
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+        .totals-row {
+            display: flex;
+            margin-bottom: 5px;
+        }
+        .totals-label {
+            width: 100px;
+            text-align: right;
+            margin-right: 10px;
+            color: #7f8c8d;
+        }
+        .totals-value {
+            width: 80px;
+            text-align: right;
+        }
+        .grand-total {
+            margin-top: 5px;
+            padding-top: 5px;
+            border-top: 1px solid #ecf0f1;
+            font-weight: bold;
+        }
+        .actions {
+            display: flex;
+            margin: 15px;
+            gap: 10px;
+        }
+        .action-button {
+            flex: 1;
+            padding: 15px 0;
+            text-align: center;
+            border-radius: 8px;
+            font-weight: bold;
+            color: white;
+        }
+        .edit-button {
+            background-color: #3498db;
+        }
+        .pdf-button {
+            background-color: #e74c3c;
+        }
+        .share-container {
+            margin: 15px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+        }
+        .share-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        .share-subtitle {
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-bottom: 15px;
+        }
+        .share-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .share-button {
+            flex: 1;
+            padding: 12px 0;
+            text-align: center;
+            border-radius: 8px;
+            font-weight: bold;
+            color: white;
+            font-size: 14px;
+        }
+        .whatsapp-button {
+            background-color: #25D366;
+        }
+        .sms-button {
+            background-color: #3498db;
+        }
+        .email-button {
+            background-color: #e74c3c;
+        }
+        .generic-share-button {
+            background-color: #34495e;
+            padding: 15px 0;
+            text-align: center;
+            border-radius: 8px;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 10px;
+        }
+        .footer {
+            text-align: center;
+            padding: 15px;
+            color: #95a5a6;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-container">
+        <div class="status-bar">
+            <span>9:41</span>
+            <span>FieldQuote</span>
+            <span>100%</span>
+        </div>
+        <div class="header">
+            <h1>Quote Preview</h1>
+            <p>Review before sharing</p>
+        </div>
+        <div style="height: 700px; overflow-y: auto; padding-bottom: 20px;">
+            <div class="quote-preview">
+                <div class="company-info">
+                    <div>
+                        <div class="company-name">FieldQuote Services</div>
+                        <div class="company-details">(555) 123-4567</div>
+                        <div class="company-details">quotes@fieldquote.ai</div>
+                    </div>
+                    <div>
+                        <div class="quote-id">Quote #Q-2025-0042</div>
+                        <div class="quote-date">Created: 2025-04-02</div>
+                        <div class="quote-date">Valid until: 2025-05-02</div>
+                    </div>
+                </div>
+                
+                <div class="client-info">
+                    <div class="section-title">Client Information</div>
+                    <div class="client-name">John Smith</div>
+                    <div class="client-details">john.smith@example.com</div>
+                    <div class="client-details">(555) 987-6543</div>
+                    <div class="client-details">123 Main St, Anytown, USA</div>
+                </div>
+                
+                <div class="line-items">
+                    <div class="section-title">Line Items</div>
+                    
+                    <div class="line-item-header">
+                        <div class="description-cell">Description</div>
+                        <div class="qty-cell">Qty</div>
+                        <div class="price-cell">Price</div>
+                        <div class="total-cell">Total</div>
+                    </div>
+                    
+                    <div class="line-item-row">
+                        <div class="description-cell">Kitchen Sink Installation</div>
+                        <div class="qty-cell">1 ea</div>
+                        <div class="price-cell">$250.00</div>
+                        <div class="total-cell">$287.50</div>
+                    </div>
+                    
+                    <div class="line-item-row">
+                        <div class="description-cell">Premium Kitchen Faucet</div>
+                        <div class="qty-cell">1 ea</div>
+                        <div class="price-cell">$175.00</div>
+                        <div class="total-cell">$210.00</div>
+                    </div>
+                    
+                    <div class="line-item-row">
+                        <div class="description-cell">Plumbing Labor</div>
+                        <div class="qty-cell">3 hrs</div>
+                        <div class="price-cell">$85.00</div>
+                        <div class="total-cell">$255.00</div>
+                    </div>
+                    
+                    <div class="line-item-row">
+                        <div class="description-cell">Disposal Installation</div>
+                        <div class="qty-cell">1 ea</div>
+                        <div class="price-cell">$125.00</div>
+                        <div class="total-cell">$143.75</div>
+                    </div>
+                    
+                    <div class="totals-container">
+                        <div class="totals-row">
+                            <div class="totals-label">Subtotal:</div>
+                            <div class="totals-value">$896.25</div>
+                        </div>
+                        <div class="totals-row">
+                            <div class="totals-label">Tax (8%):</div>
+                            <div class="totals-value">$71.70</div>
+                        </div>
+                        <div class="totals-row grand-total">
+                            <div class="totals-label">Total:</div>
+                            <div class="totals-value">$967.95</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="client-info">
+                    <div class="section-title">Notes</div>
+                    <div class="client-details">All work to be completed according to local building codes. Quote valid for 30 days.</div>
+                </div>
+            </div>
+            
+            <div class="actions">
+                <div class="action-button edit-button">Edit Quote</div>
+                <div class="action-button pdf-button">Generate PDF</div>
+            </div>
+            
+            <div class="share-container">
+                <div class="share-title">Share Quote</div>
+                <div class="share-subtitle">Choose how to share this quote:</div>
+                
+                <div class="share-buttons">
+                    <div class="share-button whatsapp-button">WhatsApp</div>
+                    <div class="share-button sms-button">SMS</div>
+                    <div class="share-button email-button">Email</div>
+                </div>
+                
+                <div class="generic-share-button">Share via Other Apps</div>
+            </div>
+            
+            <div class="footer">
+                Created with FieldQuote - Professional Quotes in Minutes
+            </div>
+        </div>
+    </div>
+</body>
+</html>

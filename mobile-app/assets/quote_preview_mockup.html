@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FieldQuote App - Quote Preview</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #F5F6F5;
+            color: #333333;
+        }
+        .phone-container {
+            width: 375px;
+            height: 812px;
+            margin: 20px auto;
+            background-color: #F5F6F5;
+            border-radius: 40px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border: 10px solid #333;
+        }
+        .status-bar {
+            height: 44px;
+            background-color: #2C4E80;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            color: white;
+            font-size: 14px;
+        }
+        .header {
+            background-color: #2C4E80;
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 600;
+        }
+        .header p {
+            margin: 5px 0 0;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+        .content {
+            padding: 16px;
+            height: calc(100% - 44px - 56px - 60px);
+            overflow-y: auto;
+        }
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .step-circle {
+            width: 24px;
+            height: 24px;
+            border-radius: 12px;
+            background-color: #E0E0E0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+            margin-bottom: 4px;
+        }
+        .step-active .step-circle {
+            background-color: #2C4E80;
+        }
+        .step-completed .step-circle {
+            background-color: #2C4E80;
+        }
+        .step-label {
+            font-size: 12px;
+            color: #999999;
+        }
+        .step-active .step-label {
+            color: #2C4E80;
+            font-weight: 500;
+        }
+        .step-completed .step-label {
+            color: #2C4E80;
+        }
+        .step-line {
+            flex: 1;
+            height: 2px;
+            background-color: #E0E0E0;
+            margin-top: 12px;
+        }
+        .preview-container {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+        .preview-header {
+            background-color: #2C4E80;
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .company-logo {
+            height: 32px;
+        }
+        .quote-number {
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .preview-content {
+            padding: 16px;
+        }
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2C4E80;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #E0E0E0;
+        }
+        .info-row {
+            display: flex;
+            margin-bottom: 8px;
+        }
+        .info-label {
+            width: 100px;
+            font-size: 14px;
+            color: #999999;
+        }
+        .info-value {
+            flex: 1;
+            font-size: 14px;
+            color: #333333;
+        }
+        .line-items-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 16px;
+        }
+        .line-items-table th {
+            text-align: left;
+            font-size: 14px;
+            font-weight: 500;
+            color: #999999;
+            padding: 8px 4px;
+            border-bottom: 1px solid #E0E0E0;
+        }
+        .line-items-table td {
+            font-size: 14px;
+            color: #333333;
+            padding: 12px 4px;
+            border-bottom: 1px solid #F5F6F5;
+        }
+        .line-items-table .price-column {
+            text-align: right;
+        }
+        .total-section {
+            margin-top: 16px;
+            border-top: 1px solid #E0E0E0;
+            padding-top: 16px;
+        }
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        .total-label {
+            font-size: 14px;
+            color: #999999;
+        }
+        .total-value {
+            font-size: 14px;
+            font-weight: 500;
+            color: #333333;
+        }
+        .grand-total-row {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid #E0E0E0;
+        }
+        .grand-total-label {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333333;
+        }
+        .grand-total-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2C4E80;
+        }
+        .notes-section {
+            margin-top: 24px;
+            font-size: 14px;
+            color: #666666;
+            line-height: 1.5;
+        }
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+        .action-button {
+            flex: 1;
+            height: 48px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .edit-button {
+            background-color: white;
+            border: 1.5px solid #2C4E80;
+            color: #2C4E80;
+        }
+        .share-button {
+            background-color: #F28C38;
+            border: none;
+            color: white;
+        }
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background-color: white;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 16px;
+            align-items: center;
+            box-shadow: 0 -1px 3px rgba(0,0,0,0.1);
+        }
+        .back-button {
+            background-color: transparent;
+            border: 1.5px solid #2C4E80;
+            color: #2C4E80;
+            font-size: 16px;
+            font-weight: 500;
+            padding: 0 16px;
+            height: 44px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .save-button {
+            background-color: #2C4E80;
+            border: none;
+            color: white;
+            font-size: 16px;
+            font-weight: 500;
+            padding: 0 24px;
+            height: 44px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        .save-button svg {
+            width: 16px;
+            height: 16px;
+            margin-right: 8px;
+            fill: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-container">
+        <div class="status-bar">
+            <span>9:41</span>
+            <span>FieldQuote</span>
+            <span>100%</span>
+        </div>
+        <div class="header">
+            <h1>Quote Preview</h1>
+            <p>Review before sharing</p>
+        </div>
+        <div class="content">
+            <div class="step-indicator">
+                <div class="step step-completed">
+                    <div class="step-circle">1</div>
+                    <div class="step-label">Client Info</div>
+                </div>
+                <div class="step-line"></div>
+                <div class="step step-completed">
+                    <div class="step-circle">2</div>
+                    <div class="step-label">Job Details</div>
+                </div>
+                <div class="step-line"></div>
+                <div class="step step-completed">
+                    <div class="step-circle">3</div>
+                    <div class="step-label">Line Items</div>
+                </div>
+                <div class="step-line"></div>
+                <div class="step step-active">
+                    <div class="step-circle">4</div>
+                    <div class="step-label">Preview</div>
+                </div>
+            </div>
+            
+            <div class="preview-container">
+                <div class="preview-header">
+                    <img src="/home/ubuntu/fieldquote/design_assets/fieldquote-high-resolution-logo-transparent.png" alt="FieldQuote" class="company-logo">
+                    <div class="quote-number">Quote #Q-2025-0042</div>
+                </div>
+                
+                <div class="preview-content">
+                    <div class="section-title">Company Information</div>
+                    <div class="info-row">
+                        <div class="info-label">Name:</div>
+                        <div class="info-value">FieldQuote Services</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Phone:</div>
+                        <div class="info-value">(555) 123-4567</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Email:</div>
+                        <div class="info-value">quotes@fieldquote.ai</div>
+                    </div>
+                    
+                    <div class="section-title">Client Information</div>
+                    <div class="info-row">
+                        <div class="info-label">Name:</div>
+                        <div class="info-value">John Smith</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Address:</div>
+                        <div class="info-value">123 Main St, Anytown, USA</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Phone:</div>
+                        <div class="info-value">(555) 987-6543</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Email:</div>
+                        <div class="info-value">john.smith@example.com</div>
+                    </div>
+                    
+                    <div class="section-title">Job Description</div>
+                    <p>Install new kitchen faucet and sink. Remove old fixtures and dispose. Connect to existing plumbing. Customer has already purchased Delta kitchen faucet model #4353.</p>
+                    
+                    <div class="section-title">Line Items</div>
+                    <table class="line-items-table">
+                        <thead>
+                            <tr>
+                                <th>Description</th>
+                                <th>Qty</th>
+                                <th class="price-column">Price</th>
+                                <th class="price-column">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Kitchen Sink Installation</td>
+                                <td>1</td>
+                                <td class="price-column">$172.50</td>
+                                <td class="price-column">$172.50</td>
+                            </tr>
+                            <tr>
+                                <td>Kitchen Faucet Installation</td>
+                                <td>1</td>
+                                <td class="price-column">$143.75</td>
+                                <td class="price-column">$143.75</td>
+                            </tr>
+                            <tr>
+                                <td>Fixture Removal & Disposal</td>
+                                <td>1</td>
+                                <td class="price-column">$75.00</td>
+                                <td class="price-column">$75.00</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <div class="total-section">
+                        <div class="total-row">
+                            <div class="total-label">Subtotal:</div>
+                            <div class="total-value">$391.25</div>
+                        </div>
+                        <div class="total-row">
+                            <div class="total-label">Tax (8%):</div>
+                            <div class="total-value">$31.30</div>
+                        </div>
+                        <div class="grand-total-row">
+                            <div class="grand-total-label">Total:</div>
+                            <div class="grand-total-value">$422.55</div>
+                        </div>
+                    </div>
+                    
+                    <div class="notes-section">
+                        <strong>Notes:</strong> All work to be completed according to local building codes. Quote valid for 30 days.
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <div class="action-button edit-button">Edit Quote</div>
+                        <div class="action-button share-button">Share Quote</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bottom-nav">
+            <button class="back-button">Back</button>
+            <button class="save-button">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/>
+                </svg>
+                Save Quote
+            </button>
+        </div>
+    </div>
+</body>
+</html>
